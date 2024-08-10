@@ -21,4 +21,18 @@ public class PlayerController : MonoBehaviour
             _movement2D.MoveToY();
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            Debug.Log("Score + 1");
+            Destroy(other.gameObject);
+        }
+        
+        else if (other.CompareTag("Obstacle"))
+        {
+            Debug.Log("Game Over");
+        }
+    }
 }
