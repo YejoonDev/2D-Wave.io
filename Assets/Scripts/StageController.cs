@@ -9,7 +9,8 @@ public class StageController : MonoBehaviour
     [SerializeField] private GameObject textTitle;
     [SerializeField] private GameObject textPlay;
     [SerializeField] private GameObject buttonContinue;
-    
+
+    [SerializeField] private TextMeshProUGUI textBestScore;
     [SerializeField] private GameObject textScoreLabel;
     [SerializeField] private TextMeshProUGUI textScoreValue;
     
@@ -18,6 +19,9 @@ public class StageController : MonoBehaviour
 
     private IEnumerator Start()
     {
+        int bestScore = PlayerPrefs.GetInt("BestScore");
+        textBestScore.text = $"<size=50>Best Score</size>\n<size=100>{bestScore}</size>";
+        
         while (true)
         {
             if (Input.GetMouseButtonDown(0))
@@ -39,10 +43,19 @@ public class StageController : MonoBehaviour
 
     public void GameOver()
     {
+        IsGameOver = true;
+
+        int bestScore = PlayerPrefs.GetInt("BestScore");
+        if (_currentScore > bestScore)
+        {
+            PlayerPrefs.SetInt("BestScore", _currentScore);
+            textBestScore.text = $"<size=50>Best Score</size>\n<size=100>{_currentScore}</size>";
+        }
+        
         buttonContinue.SetActive(true);
         textScoreLabel.SetActive(true);
         
-        IsGameOver = true;
+        
     }
 
     public void IncreaseScore(int score)
