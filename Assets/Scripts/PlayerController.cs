@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private StageController stageController;
+    [SerializeField] private CameraController cameraController;
+    [SerializeField] private GameObject playerDieEffect;
     private Movement2D _movement2D;
 
     private void Awake()
@@ -32,12 +34,15 @@ public class PlayerController : MonoBehaviour
         {
             stageController.IncreaseScore(1);
             Destroy(other.gameObject);
+            cameraController.ChangeBackgroundColor();
         }
         
         else if (other.CompareTag("Obstacle"))
         {
             Destroy(GetComponent<Rigidbody2D>());
             stageController.GameOver();
+            Instantiate(playerDieEffect, transform.position, Quaternion.identity);
+            cameraController.ShakeCamera(1f, 1f);
         }
     }
 }

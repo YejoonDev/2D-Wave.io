@@ -14,6 +14,8 @@ public class StageController : MonoBehaviour
     [SerializeField] private GameObject textScoreLabel;
     [SerializeField] private TextMeshProUGUI textScoreValue;
     
+    private readonly float _gameOverDelayTime = 1.0f;
+    
     public bool IsGameOver { private set; get; } = false;
     private int _currentScore;
 
@@ -44,7 +46,12 @@ public class StageController : MonoBehaviour
     public void GameOver()
     {
         IsGameOver = true;
+        StartCoroutine(OnGameOver());
+    }
 
+    private IEnumerator OnGameOver()
+    {
+        yield return new WaitForSeconds(_gameOverDelayTime);
         int bestScore = PlayerPrefs.GetInt("BestScore");
         if (_currentScore > bestScore)
         {
@@ -54,7 +61,6 @@ public class StageController : MonoBehaviour
         
         buttonContinue.SetActive(true);
         textScoreLabel.SetActive(true);
-        
         
     }
 
